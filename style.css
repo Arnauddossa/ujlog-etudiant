@@ -348,20 +348,27 @@ button { font-family:inherit; cursor:pointer; border:none; }
 .contact-form .form-group { display:flex; flex-direction:column; gap:.35rem; }
 .contact-form label { font-size:.82rem; font-weight:600; color:var(--text-muted); }
 .contact-form input, .contact-form textarea {
-    width:100%; padding:.7rem .95rem;
+    width:100%; padding:.7rem .95rem .7rem 2.6rem;
     border:1.5px solid var(--border); border-radius:8px;
     font-family:inherit; font-size:.92rem; color:var(--text);
     background:var(--bg); outline:none; resize:none;
     transition:border-color var(--t);
 }
 .contact-form input:focus, .contact-form textarea:focus { border-color:var(--green); }
+.contact-form .input-wrap { position:relative; display:flex; align-items:flex-start; }
+.contact-form .input-wrap > i:first-child {
+    position:absolute; left:.85rem; top:.78rem;
+    color:var(--text-muted); font-size:.88rem; pointer-events:none;
+}
+.contact-form .input-wrap-textarea > i:first-child { top:.78rem; }
 .btn-submit-contact {
     padding:.78rem 1.4rem; background:var(--green); color:#fff;
     border-radius:8px; font-size:.93rem; font-weight:600;
     display:flex; align-items:center; justify-content:center; gap:.5rem;
     transition:all var(--t);
 }
-.btn-submit-contact:hover { background:var(--green-dark); transform:translateY(-2px); box-shadow:0 6px 20px rgba(26,122,63,.25); }
+.btn-submit-contact:hover:not(:disabled) { background:var(--green-dark); transform:translateY(-2px); box-shadow:0 6px 20px rgba(26,122,63,.25); }
+.btn-submit-contact:disabled { cursor:not-allowed; }
 
 /* ===== FOOTER ===== */
 .footer { background:var(--green-dark); color:rgba(255,255,255,.85); padding:3.5rem 1.5rem 0; }
@@ -437,11 +444,4 @@ button { font-family:inherit; cursor:pointer; border:none; }
 .toggle-pwd:hover { color:var(--text); }
 
 .btn-submit {
-    width:100%; padding:.82rem; background:var(--green); color:#fff;
-    border-radius:9px; font-size:.95rem; font-weight:600;
-    transition:all var(--t);
-    display:flex; align-items:center; justify-content:center; gap:.5rem;
-}
-.btn-submit:hover { background:var(--green-dark); transform:translateY(-2px); box-shadow:0 6px 20px rgba(26,122,63,.3); }
-
-.form-footer { text-align:center; margin-top:1.1rem; font-size:.85rem; co
+    width:100%; padding:.82rem
