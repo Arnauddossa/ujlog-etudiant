@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -358,21 +360,30 @@
                     </div>
                 </div>
             </div>
-            <form class="contact-form" id="contactForm">
+            <form class="contact-form" id="contactForm" novalidate>
                 <div class="form-group">
                     <label>Votre nom</label>
-                    <input type="text" placeholder="Ex: Kouamé Arnaud" required>
+                    <div class="input-wrap">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="contactNom" placeholder="Ex: Kouamé Arnaud" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Votre email</label>
-                    <input type="email" placeholder="exemple@email.com" required>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="contactEmail" placeholder="exemple@email.com" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Message</label>
-                    <textarea rows="5" placeholder="Votre message ici…" required></textarea>
+                    <div class="input-wrap input-wrap-textarea">
+                        <i class="fas fa-comment-alt"></i>
+                        <textarea id="contactMessage" rows="5" placeholder="Votre message ici…" required></textarea>
+                    </div>
                 </div>
-                <button type="submit" class="btn-submit-contact">
-                    <i class="fas fa-paper-plane"></i> Envoyer le message
+                <button type="submit" class="btn-submit-contact" id="btnContactSubmit">
+                    <i class="fas fa-paper-plane"></i> <span id="btnContactText">Envoyer le message</span>
                 </button>
             </form>
         </div>
@@ -414,17 +425,4 @@
     </div>
 </footer>
 
-<!-- ========= TOAST ========= -->
-<div class="toast" id="toast"></div>
-
-<!-- ========= MODAL UPLOAD ========= -->
-<div id="uploadModal" class="modal" role="dialog" aria-modal="true">
-    <div class="modal-content modal-upload">
-        <button class="modal-close" onclick="closeModal('upload')">&times;</button>
-        <div class="modal-header">
-            <i class="fas fa-cloud-upload-alt modal-icon"></i>
-            <h2>Ajouter une ressource</h2>
-        </div>
-        <div id="uploadProgress" style="display:none; text-align:center; padding:2rem 0;">
-            <div class="spinner"></div>
-            <p style="margin-top:1rem; color:var(--green); font-weight:600;">Envoi
+<!-- ========= TOAST =======
