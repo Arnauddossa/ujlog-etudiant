@@ -12,434 +12,419 @@
 </head>
 <body>
 
-    <!-- ========= NAVBAR ========= -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#accueil" class="nav-logo">
-                <span class="logo-icon"><i class="fas fa-book-open"></i></span>
-                <span class="logo-text">ujlog<strong>L2</strong></span>
-            </a>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#accueil" class="nav-link active">Accueil</a></li>
-                <li><a href="#cm" class="nav-link">Cours</a></li>
-                <li><a href="#td" class="nav-link">TD</a></li>
-                <li><a href="#examens" class="nav-link">Examens</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="btn-nav btn-outline" onclick="openModal('login')">Se connecter</button>
-                <button class="btn-nav btn-solid" onclick="openModal('register')">S'inscrire</button>
-                <button class="btn-add-resource" id="btnAddResource" style="display:none;" onclick="openUploadModal()">
-                    <i class="fas fa-plus"></i> Ajouter
-                </button>
+<!-- ========= NAVBAR ========= -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="#accueil" class="nav-logo">
+            <span class="logo-icon"><i class="fas fa-book-open"></i></span>
+            <span class="logo-text">ujlog<strong>L2</strong></span>
+        </a>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#accueil"         class="nav-link active">Accueil</a></li>
+            <li><a href="#cm"              class="nav-link">Cours</a></li>
+            <li><a href="#td"              class="nav-link">TD</a></li>
+            <li><a href="#examens"         class="nav-link">Examens</a></li>
+            <li><a href="#resultats-td"    class="nav-link">Résultats TD</a></li>
+            <li><a href="#resultats-exam"  class="nav-link">Résultats Examen</a></li>
+            <li><a href="#contact"         class="nav-link">Contact</a></li>
+        </ul>
+        <div class="nav-actions" id="navActions">
+            <!-- Boutons injectés par JS -->
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- ========= HERO ========= -->
+<section id="accueil" class="hero">
+    <div class="hero-bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+        <span class="hero-badge"><i class="fas fa-graduation-cap"></i> Plateforme L2 Histoire-Géo · Daloa</span>
+        <h1 class="hero-title">Réussissez votre L2<br><em>ensemble</em></h1>
+        <p class="hero-subtitle">Cours, TD, examens et résultats — toutes vos ressources académiques au même endroit, accessibles par tous.</p>
+        <div class="search-bar-wrap">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher un cours, TD, examen…" autocomplete="off">
+                <button class="btn-search-clear" id="searchClear" style="display:none;"><i class="fas fa-times"></i></button>
             </div>
-            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-                <span></span><span></span><span></span>
+            <div class="search-results-dropdown" id="searchDropdown"></div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item"><span class="stat-num" id="statCM">0</span><span class="stat-lbl">Cours (CM)</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><span class="stat-num" id="statTD">0</span><span class="stat-lbl">Travaux Dirigés</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><span class="stat-num" id="statExamen">0</span><span class="stat-lbl">Examens</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><span class="stat-num" id="statResultats">0</span><span class="stat-lbl">Résultats</span></div>
+        </div>
+    </div>
+    <div class="hero-scroll-hint"><span>Défiler</span><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ========= COURS MAGISTRAUX ========= -->
+<section id="cm" class="section bg-light">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Cours Magistraux</h2>
+            <p class="section-sub">Retrouvez tous les cours par semestre et par matière.</p>
+        </div>
+        <!-- Onglets Semestres -->
+        <div class="sem-tabs">
+            <button class="sem-tab active" onclick="setSemestre('cm',1,this)">
+                <i class="fas fa-1"></i> Semestre 1
+            </button>
+            <button class="sem-tab" onclick="setSemestre('cm',2,this)">
+                <i class="fas fa-2"></i> Semestre 2
             </button>
         </div>
-    </nav>
-
-    <!-- ========= HERO ========= -->
-    <section id="accueil" class="hero">
-        <div class="hero-bg-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label><i class="fas fa-book"></i> Matière</label>
+                <select class="filter-select" id="cm-subject">
+                    <option value="all">Toutes</option>
+                    <option value="histoire">Histoire</option>
+                    <option value="geo">Géographie</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fas fa-calendar-alt"></i> Année</label>
+                <select class="filter-select" id="cm-year">
+                    <option value="all">Toutes</option>
+                    <option value="2026">2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+            <button class="btn-reset-filter" onclick="resetFilters('cm')">
+                <i class="fas fa-rotate-left"></i> Réinitialiser
+            </button>
         </div>
-        <div class="hero-content">
-            <span class="hero-badge"><i class="fas fa-graduation-cap"></i> Plateforme L2 Histoire-Géo</span>
-            <h1 class="hero-title">Réussissez votre L2<br><em>ensemble</em></h1>
-            <p class="hero-subtitle">Cours magistraux, travaux dirigés, examens corrigés — tous vos ressources académiques au même endroit.</p>
-            <div class="search-bar-wrap">
-                <div class="search-bar" id="searchBar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Rechercher un cours, TD, examen…" autocomplete="off">
-                    <button class="btn-search-clear" id="searchClear" style="display:none;">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="search-results-dropdown" id="searchDropdown"></div>
-            </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-num" id="statCM">0</span>
-                    <span class="stat-lbl">Cours (CM)</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-num" id="statTD">0</span>
-                    <span class="stat-lbl">Travaux Dirigés</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-num" id="statExamen">0</span>
-                    <span class="stat-lbl">Examens</span>
-                </div>
-            </div>
-        </div>
-        <div class="hero-scroll-hint">
-            <span>Défiler</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </section>
-
-    <!-- ========= SECTION CM ========= -->
-    <section id="cm" class="section bg-light">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Cours Magistraux</h2>
-                <p class="section-sub">Retrouvez tous les cours filtrés par matière et par année.</p>
-            </div>
-            <div class="filters-bar">
-                <div class="filter-group">
-                    <label><i class="fas fa-calendar-alt"></i> Année</label>
-                    <select class="filter-select" id="cm-year">
-                        <option value="all">Toutes</option>
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label><i class="fas fa-book"></i> Matière</label>
-                    <select class="filter-select" id="cm-subject">
-                        <option value="all">Toutes</option>
-                        <option value="histoire">Histoire</option>
-                        <option value="geo">Géographie</option>
-                    </select>
-                </div>
-                <button class="btn-reset-filter" onclick="resetFilters('cm')">
-                    <i class="fas fa-rotate-left"></i> Réinitialiser
-                </button>
-            </div>
-            <div class="cards-grid" id="cm-grid"></div>
-            <div class="load-more-wrap">
-                <button class="btn-load-more" id="cm-load-more" onclick="loadMore('cm')">
-                    <i class="fas fa-chevron-down"></i> Voir plus de cours
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========= SECTION TD ========= -->
-    <section id="td" class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Travaux Dirigés</h2>
-                <p class="section-sub">Exercices et corrigés pour vous préparer au mieux.</p>
-            </div>
-            <div class="filters-bar">
-                <div class="filter-group">
-                    <label><i class="fas fa-calendar-alt"></i> Année</label>
-                    <select class="filter-select" id="td-year">
-                        <option value="all">Toutes</option>
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label><i class="fas fa-book"></i> Matière</label>
-                    <select class="filter-select" id="td-subject">
-                        <option value="all">Toutes</option>
-                        <option value="histoire">Histoire</option>
-                        <option value="geo">Géographie</option>
-                    </select>
-                </div>
-                <button class="btn-reset-filter" onclick="resetFilters('td')">
-                    <i class="fas fa-rotate-left"></i> Réinitialiser
-                </button>
-            </div>
-            <div class="cards-grid" id="td-grid"></div>
-            <div class="load-more-wrap">
-                <button class="btn-load-more" id="td-load-more" onclick="loadMore('td')">
-                    <i class="fas fa-chevron-down"></i> Voir plus de TD
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========= SECTION EXAMENS ========= -->
-    <section id="examens" class="section bg-light">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Examens</h2>
-                <p class="section-sub">Entraînez-vous avec les sujets des sessions passées.</p>
-            </div>
-            <div class="exam-categories">
-                <div class="category-card" id="cat-all" onclick="filterExam(null)" data-active="true">
-                    <i class="fas fa-layer-group"></i>
-                    <h3>Tous les examens</h3>
-                    <p>Voir l'ensemble des sujets</p>
-                </div>
-                <div class="category-card" id="cat-session1" onclick="filterExam('session1')">
-                    <i class="fas fa-pen-nib"></i>
-                    <h3>Session 1</h3>
-                    <p>Examens de fin de semestre</p>
-                </div>
-                <div class="category-card" id="cat-session2" onclick="filterExam('session2')">
-                    <i class="fas fa-redo-alt"></i>
-                    <h3>Session 2</h3>
-                    <p>Examens de rattrapage</p>
-                </div>
-            </div>
-            <div class="cards-grid" id="examens-grid"></div>
-            <div class="load-more-wrap">
-                <button class="btn-load-more" id="examens-load-more" onclick="loadMore('examens')">
-                    <i class="fas fa-chevron-down"></i> Voir plus d'examens
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========= CONTACT ========= -->
-    <section id="contact" class="section contact-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Contact</h2>
-                <p class="section-sub">Une question ? Un problème ? Contactez-nous.</p>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div>
-                            <h4>Email</h4>
-                            <a href="mailto:arnauddossa21@gmail.com">arnauddossa21@gmail.com</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                        <div>
-                            <h4>Téléphone / WhatsApp</h4>
-                            <a href="https://wa.me/2250172010446" target="_blank">+225 01 72 01 04 46</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div>
-                            <h4>Localisation</h4>
-                            <p>Daloa, Côte d'Ivoire</p>
-                        </div>
-                    </div>
-                </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label>Votre nom</label>
-                        <input type="text" placeholder="Ex: Kouamé Arnaud" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Votre email</label>
-                        <input type="email" placeholder="exemple@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Message</label>
-                        <textarea rows="5" placeholder="Votre message ici…" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit-contact">
-                        <i class="fas fa-paper-plane"></i> Envoyer le message
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========= FOOTER ========= -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <span class="logo-text footer-logo">ujlog<strong>L2</strong></span>
-                <p>Plateforme académique de partage de ressources pour les étudiants en Histoire-Géographie, niveau L2.</p>
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://wa.me/2250172010446" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <a href="mailto:arnauddossa21@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                </div>
-            </div>
-            <div class="footer-links">
-                <h4>Navigation</h4>
-                <ul>
-                    <li><a href="#cm">Cours Magistraux</a></li>
-                    <li><a href="#td">Travaux Dirigés</a></li>
-                    <li><a href="#examens">Examens</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h4>Compte</h4>
-                <ul>
-                    <li><a href="#" onclick="openModal('login')">Se connecter</a></li>
-                    <li><a href="#" onclick="openModal('register')">S'inscrire</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 UjLog Étudiant L2 — Histoire & Géographie · Daloa, Côte d'Ivoire</p>
-        </div>
-    </footer>
-
-    <!-- ========= TOAST NOTIFICATION ========= -->
-    <div class="toast" id="toast"></div>
-
-    <!-- ========= MODAL CONNEXION ========= -->
-    <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('login')" aria-label="Fermer">&times;</button>
-            <div class="modal-header">
-                <i class="fas fa-user-circle modal-icon"></i>
-                <h2 id="loginTitle">Connexion</h2>
-            </div>
-            <form id="loginForm" novalidate>
-                <div class="form-group">
-                    <label for="loginEmail">Adresse email</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="loginEmail" placeholder="votre@email.com" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Mot de passe</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required>
-                        <button type="button" class="toggle-pwd" onclick="togglePassword('loginPassword')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">Se connecter</button>
-                <p class="form-footer">Pas encore de compte ? <a href="#" onclick="switchModal('register')">S'inscrire</a></p>
-            </form>
+        <div class="cards-grid" id="cm-grid"></div>
+        <div class="load-more-wrap">
+            <button class="btn-load-more" id="cm-load-more" onclick="loadMore('cm')">
+                <i class="fas fa-chevron-down"></i> Voir plus
+            </button>
         </div>
     </div>
+</section>
 
-    <!-- ========= MODAL INSCRIPTION ========= -->
-    <div id="registerModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="registerTitle">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('register')" aria-label="Fermer">&times;</button>
-            <div class="modal-header">
-                <i class="fas fa-user-plus modal-icon"></i>
-                <h2 id="registerTitle">Créer un compte</h2>
+<!-- ========= TRAVAUX DIRIGÉS ========= -->
+<section id="td" class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Travaux Dirigés</h2>
+            <p class="section-sub">Exercices et corrigés par semestre et par matière.</p>
+        </div>
+        <div class="sem-tabs">
+            <button class="sem-tab active" onclick="setSemestre('td',1,this)">
+                <i class="fas fa-1"></i> Semestre 1
+            </button>
+            <button class="sem-tab" onclick="setSemestre('td',2,this)">
+                <i class="fas fa-2"></i> Semestre 2
+            </button>
+        </div>
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label><i class="fas fa-book"></i> Matière</label>
+                <select class="filter-select" id="td-subject">
+                    <option value="all">Toutes</option>
+                    <option value="histoire">Histoire</option>
+                    <option value="geo">Géographie</option>
+                </select>
             </div>
-            <form id="registerForm" novalidate>
-                <div class="form-group">
-                    <label for="registerName">Nom complet</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="registerName" placeholder="Prénom Nom" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="registerEmail">Adresse email</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="registerEmail" placeholder="votre@email.com" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword">Mot de passe</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="registerPassword" placeholder="Minimum 6 caractères" required minlength="6">
-                        <button type="button" class="toggle-pwd" onclick="togglePassword('registerPassword')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="registerConfirm">Confirmer le mot de passe</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="registerConfirm" placeholder="••••••••" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">Créer mon compte</button>
-                <p class="form-footer">Déjà inscrit ? <a href="#" onclick="switchModal('login')">Se connecter</a></p>
-            </form>
+            <div class="filter-group">
+                <label><i class="fas fa-calendar-alt"></i> Année</label>
+                <select class="filter-select" id="td-year">
+                    <option value="all">Toutes</option>
+                    <option value="2026">2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+            <button class="btn-reset-filter" onclick="resetFilters('td')">
+                <i class="fas fa-rotate-left"></i> Réinitialiser
+            </button>
+        </div>
+        <div class="cards-grid" id="td-grid"></div>
+        <div class="load-more-wrap">
+            <button class="btn-load-more" id="td-load-more" onclick="loadMore('td')">
+                <i class="fas fa-chevron-down"></i> Voir plus
+            </button>
         </div>
     </div>
+</section>
 
-    <!-- ========= MODAL UPLOAD ========= -->
-    <div id="uploadModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadTitle">
-        <div class="modal-content modal-upload">
-            <button class="modal-close" onclick="closeModal('upload')" aria-label="Fermer">&times;</button>
-            <div class="modal-header">
-                <i class="fas fa-cloud-upload-alt modal-icon"></i>
-                <h2 id="uploadTitle">Ajouter une ressource</h2>
+<!-- ========= EXAMENS ========= -->
+<section id="examens" class="section bg-light">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Examens</h2>
+            <p class="section-sub">Sujets d'examens par semestre et par session.</p>
+        </div>
+        <div class="sem-tabs">
+            <button class="sem-tab active" onclick="setSemestre('examens',1,this)">
+                <i class="fas fa-1"></i> Semestre 1
+            </button>
+            <button class="sem-tab" onclick="setSemestre('examens',2,this)">
+                <i class="fas fa-2"></i> Semestre 2
+            </button>
+        </div>
+        <div class="session-tabs" id="examens-sessions">
+            <button class="session-tab active" onclick="setSession('examens',null,this)">
+                <i class="fas fa-layer-group"></i> Toutes les sessions
+            </button>
+            <button class="session-tab" onclick="setSession('examens','session1',this)">
+                <i class="fas fa-pen-nib"></i> Session 1
+            </button>
+            <button class="session-tab" onclick="setSession('examens','session2',this)">
+                <i class="fas fa-redo-alt"></i> Session 2
+            </button>
+        </div>
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label><i class="fas fa-book"></i> Matière</label>
+                <select class="filter-select" id="examens-subject">
+                    <option value="all">Toutes</option>
+                    <option value="histoire">Histoire</option>
+                    <option value="geo">Géographie</option>
+                </select>
             </div>
-            <div id="uploadProgress" style="display:none; text-align:center; padding:2rem 0;">
-                <div class="spinner"></div>
-                <p style="margin-top:1rem; color:var(--green);">Envoi en cours, veuillez patienter…</p>
+            <div class="filter-group">
+                <label><i class="fas fa-calendar-alt"></i> Année</label>
+                <select class="filter-select" id="examens-year">
+                    <option value="all">Toutes</option>
+                    <option value="2026">2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
             </div>
-            <form id="uploadForm" novalidate>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Type de ressource</label>
-                        <div class="input-wrap">
-                            <i class="fas fa-tag"></i>
-                            <select id="uploadType" required>
-                                <option value="cm">Cours Magistral (CM)</option>
-                                <option value="td">Travaux Dirigés (TD)</option>
-                                <option value="examen">Examen</option>
-                            </select>
-                        </div>
+            <button class="btn-reset-filter" onclick="resetFilters('examens')">
+                <i class="fas fa-rotate-left"></i> Réinitialiser
+            </button>
+        </div>
+        <div class="cards-grid" id="examens-grid"></div>
+        <div class="load-more-wrap">
+            <button class="btn-load-more" id="examens-load-more" onclick="loadMore('examens')">
+                <i class="fas fa-chevron-down"></i> Voir plus
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ========= RÉSULTATS TD ========= -->
+<section id="resultats-td" class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Résultats TD</h2>
+            <p class="section-sub">Consultez et téléchargez les résultats de TD par semestre et par matière.</p>
+        </div>
+        <div class="sem-tabs">
+            <button class="sem-tab active" onclick="setSemestre('resultats_td',1,this)">
+                <i class="fas fa-1"></i> Semestre 1
+            </button>
+            <button class="sem-tab" onclick="setSemestre('resultats_td',2,this)">
+                <i class="fas fa-2"></i> Semestre 2
+            </button>
+        </div>
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label><i class="fas fa-book"></i> Matière</label>
+                <select class="filter-select" id="resultats_td-subject">
+                    <option value="all">Toutes</option>
+                    <option value="histoire">Histoire</option>
+                    <option value="geo">Géographie</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fas fa-calendar-alt"></i> Année</label>
+                <select class="filter-select" id="resultats_td-year">
+                    <option value="all">Toutes</option>
+                    <option value="2026">2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+            <button class="btn-reset-filter" onclick="resetFilters('resultats_td')">
+                <i class="fas fa-rotate-left"></i> Réinitialiser
+            </button>
+        </div>
+        <div class="cards-grid" id="resultats_td-grid"></div>
+        <div class="load-more-wrap">
+            <button class="btn-load-more" id="resultats_td-load-more" onclick="loadMore('resultats_td')">
+                <i class="fas fa-chevron-down"></i> Voir plus
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ========= RÉSULTATS EXAMENS ========= -->
+<section id="resultats-exam" class="section bg-light">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Résultats Examens</h2>
+            <p class="section-sub">Consultez les résultats d'examens par semestre et par session.</p>
+        </div>
+        <div class="sem-tabs">
+            <button class="sem-tab active" onclick="setSemestre('resultats_exam',1,this)">
+                <i class="fas fa-1"></i> Semestre 1
+            </button>
+            <button class="sem-tab" onclick="setSemestre('resultats_exam',2,this)">
+                <i class="fas fa-2"></i> Semestre 2
+            </button>
+        </div>
+        <div class="session-tabs">
+            <button class="session-tab active" onclick="setSession('resultats_exam',null,this)">
+                <i class="fas fa-layer-group"></i> Toutes les sessions
+            </button>
+            <button class="session-tab" onclick="setSession('resultats_exam','session1',this)">
+                <i class="fas fa-pen-nib"></i> Session 1
+            </button>
+            <button class="session-tab" onclick="setSession('resultats_exam','session2',this)">
+                <i class="fas fa-redo-alt"></i> Session 2
+            </button>
+        </div>
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label><i class="fas fa-book"></i> Matière</label>
+                <select class="filter-select" id="resultats_exam-subject">
+                    <option value="all">Toutes</option>
+                    <option value="histoire">Histoire</option>
+                    <option value="geo">Géographie</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fas fa-calendar-alt"></i> Année</label>
+                <select class="filter-select" id="resultats_exam-year">
+                    <option value="all">Toutes</option>
+                    <option value="2026">2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+            <button class="btn-reset-filter" onclick="resetFilters('resultats_exam')">
+                <i class="fas fa-rotate-left"></i> Réinitialiser
+            </button>
+        </div>
+        <div class="cards-grid" id="resultats_exam-grid"></div>
+        <div class="load-more-wrap">
+            <button class="btn-load-more" id="resultats_exam-load-more" onclick="loadMore('resultats_exam')">
+                <i class="fas fa-chevron-down"></i> Voir plus
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ========= CONTACT ========= -->
+<section id="contact" class="section contact-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Contact</h2>
+            <p class="section-sub">Une question ? Un problème ? Contactez-nous.</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <h4>Email</h4>
+                        <a href="mailto:arnauddossa21@gmail.com">arnauddossa21@gmail.com</a>
                     </div>
-                    <div class="form-group">
-                        <label>Matière</label>
-                        <div class="input-wrap">
-                            <i class="fas fa-book"></i>
-                            <select id="uploadMatiere" required>
-                                <option value="histoire">Histoire</option>
-                                <option value="geo">Géographie</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div>
+                        <h4>WhatsApp</h4>
+                        <a href="https://wa.me/2250172010446" target="_blank">+225 01 72 01 04 46</a>
                     </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h4>Localisation</h4>
+                        <p>Daloa, Côte d'Ivoire</p>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label>Votre nom</label>
+                    <input type="text" placeholder="Ex: Kouamé Arnaud" required>
                 </div>
                 <div class="form-group">
-                    <label>Titre de la ressource</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-heading"></i>
-                        <input type="text" id="uploadTitre" placeholder="Ex: Cours sur la colonisation africaine" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Année</label>
-                        <div class="input-wrap">
-                            <i class="fas fa-calendar"></i>
-                            <select id="uploadAnnee" required>
-                                <option value="2026">2026</option>
-                                <option value="2025">2025</option>
-                                <option value="2024">2024</option>
-                                <option value="2023">2023</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" id="sessionGroup" style="display:none;">
-                        <label>Session</label>
-                        <div class="input-wrap">
-                            <i class="fas fa-layer-group"></i>
-                            <select id="uploadSession">
-                                <option value="session1">Session 1</option>
-                                <option value="session2">Session 2</option>
-                            </select>
-                        </div>
-                    </div>
+                    <label>Votre email</label>
+                    <input type="email" placeholder="exemple@email.com" required>
                 </div>
                 <div class="form-group">
-                    <label>Fichier (PDF, DOC, image)</label>
-                    <div class="file-drop-zone" id="fileDropZone">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Glisser-déposer ou <span>cliquer pour choisir</span></p>
-                        <input type="file" id="uploadFichier" accept=".pdf,.doc,.docx,.jpg,.png" required>
-                        <p id="fileChosen" class="file-chosen-name"></p>
-                    </div>
+                    <label>Message</label>
+                    <textarea rows="5" placeholder="Votre message ici…" required></textarea>
                 </div>
-                <button type="submit" class="btn-submit">
-                    <i class="fas fa-cloud-upload-alt"></i> Publier la ressource
+                <button type="submit" class="btn-submit-contact">
+                    <i class="fas fa-paper-plane"></i> Envoyer le message
                 </button>
             </form>
         </div>
     </div>
+</section>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<!-- ========= FOOTER ========= -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <span class="logo-text footer-logo">ujlog<strong>L2</strong></span>
+            <p>Plateforme académique de partage de ressources pour les étudiants en Histoire-Géographie, niveau L2 — Daloa, Côte d'Ivoire.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://wa.me/2250172010446" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:arnauddossa21@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <h4>Ressources</h4>
+            <ul>
+                <li><a href="#cm">Cours Magistraux</a></li>
+                <li><a href="#td">Travaux Dirigés</a></li>
+                <li><a href="#examens">Examens</a></li>
+                <li><a href="#resultats-td">Résultats TD</a></li>
+                <li><a href="#resultats-exam">Résultats Examens</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="#contact">Nous contacter</a></li>
+                <li><a href="https://wa.me/2250172010446">WhatsApp</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 UjLog Étudiant L2 — Histoire & Géographie · Daloa, Côte d'Ivoire</p>
+    </div>
+</footer>
+
+<!-- ========= TOAST ========= -->
+<div class="toast" id="toast"></div>
+
+<!-- ========= MODAL UPLOAD ========= -->
+<div id="uploadModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content modal-upload">
+        <button class="modal-close" onclick="closeModal('upload')">&times;</button>
+        <div class="modal-header">
+            <i class="fas fa-cloud-upload-alt modal-icon"></i>
+            <h2>Ajouter une ressource</h2>
+        </div>
+        <div id="uploadProgress" style="display:none; text-align:center; padding:2rem 0;">
+            <div class="spinner"></div>
+            <p style="margin-top:1rem; color:var(--green); font-weight:600;">Envoi
